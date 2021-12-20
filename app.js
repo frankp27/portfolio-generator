@@ -1,4 +1,5 @@
 const inquirer = require('inquirer');
+
 // const fs = require('fs');
 
 // const generatePage = require('./src/page-template.js');
@@ -31,18 +32,21 @@ const promptUser = () => {
 
 
 const promptProject = portfolioData => {
-  
-// If there's no 'projects' array property, create one
-if (!portfolioData.projects) {
-  portfolioData.projects = [];
-}
 
   console.log(`
 =================
 Add a New Project
 =================
 `);
+  
+// If there's no 'projects' array property, create one
+if (!portfolioData.projects) {
+  portfolioData.projects = [];
+}
+
   return inquirer.prompt
+  
+  
   ([
     {
       type: 'input',
@@ -77,16 +81,18 @@ Add a New Project
       message: 'Would you like to enter another project?',
       default: false
     }
-    .then(projectData => {
-      portfolioData.projects.push(projectData);
-      if (projectData.confirmAddProject) {
-        return promptProject(portfolioData);
-      } else {
-        return portfolioData;
-      }
-    })
-  ]);
+    
+  ]).then(projectData => {
+    portfolioData.projects.push(projectData);
+    if (projectData.confirmAddProject) {
+      return promptProject(portfolioData);
+    } else {
+      return portfolioData;
+    }
+  });
 };
+
+
 
 promptUser()
 .then(promptProject)
